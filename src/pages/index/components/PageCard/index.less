@@ -1,0 +1,97 @@
+.page-card {
+  border-radius: 20px;
+  box-shadow: 0 50px 100px fade(#000, 10);
+  min-height: 500px;
+  position: relative;
+  transition: all .3s ease;
+  max-height: 880px;
+  overflow-y: hidden;
+  background-color: #fff;
+  max-width: auto;
+  // top: 140px;
+  // left: 40px;
+  // position: absolute;
+  // max-width: 100%;
+  &.is-tap {
+    transform: scale(.9);
+  }
+  &.is-expand {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    border-radius: 0;
+    box-shadow: unset;
+    overflow-y: auto;
+    max-height: 100vh;
+    max-width: 100%;
+    .card-banner-bg  {
+      border-radius: 0;
+    }
+  }
+  .mini-text {
+    letter-spacing: 4px;
+  }
+  .lg-text {
+    letter-spacing: 6px;
+    font-weight: 500;
+  }
+  .card-banner-header {
+    position: absolute;
+    padding: 40px;
+    white-space: pre-wrap;
+  }
+  .card-banner-bg {
+    // width: 100%;
+    width: 414PX;
+    height: 549PX;
+    display: block;
+    border-radius: 20px;
+    transition: .3s ease;
+  }
+  .card-content {
+    white-space: pre-wrap;
+  }
+  .card-content-item {
+    margin-top: 80px;
+  }
+  .card-download {
+    text-align: center;
+    padding: 40px 0;
+    margin-top: 80px;
+    background-color: #ebeff7;
+    [class*='app-'] {
+      margin-top: 10px;
+    }
+  }
+  .app-avatar {
+    width: 180px;
+    height: 180px;
+    border-radius: 30px;
+    background-color: antiquewhite;
+    margin: auto;
+  }
+  .app-download-btn {
+    background-color: #1652f0;
+    height: 50px;
+    width: 120px;
+    color: #fff;
+    line-height: 50px;
+    border-radius: 50px;
+  }
+  .app-download-tips {
+    font-size: 12px;
+  }
+  .card-share {
+    padding: 100px 0;
+    text-align: center;
+  }
+  .card-share-btn {
+    background-color: #ebeff7;
+    color: #1652f0;
+    border-radius: 10px;
+    width: 200px;
+    border: unset;
+    outline: unset;
+  }
+}
