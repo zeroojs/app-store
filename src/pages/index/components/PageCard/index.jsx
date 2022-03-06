@@ -4,7 +4,7 @@
  * @Author: Minyoung
  * @Date: 2022-03-03 15:44:08
  * @LastEditors: Minyoung
- * @LastEditTime: 2022-03-04 00:55:51
+ * @LastEditTime: 2022-03-06 23:52:13
  */
 import { View, Text, Image, CoverView, Button } from "@tarojs/components";
 import Taro from "@tarojs/taro";
@@ -19,48 +19,55 @@ export default class PageCard extends Component {
       isExpand: false,
       style: '',
       lastStyle: '',
-      isTap: false
+      isTap: false,
+      addCloseExpand: false, // 是否增加 is-close-expand 类名
+      containerStyle: '' // 外层 style
     }
   }
 
-  handleCardClick = (e) => {
-    console.log(this)
+  handleCardClick = () => {
     Taro.createSelectorQuery()
-      // .in(PageCard)
-      .select('#card')
+      .select(`#card-${this.props.name}`)
       .boundingClientRect()
-      .exec(([{ top, left }]) => {
+      .exec((res) => {
+        const [{ top, left, height }] = res
+        // position: absolute;
         let style = `
-          position: absolute;
+          position: fixed;
           top:${top}px;
           left:${left}px;
           max-width: calc(100% - ${left * 2}px);
           `
-        this.setState({ style })
+        // this.setState({ style })
         if (!this.state.isExpand) {
-          this.setState({ lastStyle: style })
+          this.setState({ lastStyle: style, style })
           let timer = setTimeout(() => {
             this.setState(state => {
               const isExpand = !state.isExpand
               return {
                 isExpand,
-                style: ''
+                style: '',
+                addCloseExpand: false,
+                containerStyle: `height:${height}px`
               }
             })
             clearTimeout(timer)
           }, 50)
         } else {
-          this.setState({ style: this.state.lastStyle })
+          this.setState({ style: this.state.lastStyle, containerStyle: '', addCloseExpand: true })
           let timer = setTimeout(() => {
             this.setState(state => {
               const isExpand = !state.isExpand
               return {
-                isExpand,
-                style: ''
+                isExpand
               }
             })
             clearTimeout(timer)
           }, 300)
+          const timer2 = setTimeout(() => {
+            this.setState({ style: '' })
+            clearTimeout(timer2)
+          }, 1000)
         }
       })
   }
@@ -74,48 +81,56 @@ export default class PageCard extends Component {
   }
   render() {
     return (
-      <CoverView
-        id="card"
-        style={this.state.style}
-        className={[
-          'page-card',
-          this.state.isExpand ? ' is-expand' : '',
-          this.state.isTap ? ' is-tap' : '',
-        ]}
-        // onClick={this.handleCardClick}
-        onTouchStart={this.handleCardTapStart}
-        onTouchEnd={this.handleCardTapEnd}
-      >
-        <View className="card-banner">
-          <View className="card-banner-header">
-            <Text className="mini-text ">高手绝招</Text>
-            <View className="lg-text">来一次图片与文字的绝妙</View>
-            <View className="lg-text">搭配</View>
-          </View>
-          <Image src={banner} mode='widthFix' className="card-banner-bg"></Image>
-        </View>
-        <View className="card-content app-container">
-          <View className="card-content-item">
-            You have to be careful about the meaning of this in JSX callbacks. In JavaScript, class methods are not bound by default. If you forget to bind this.handleClick and pass it to onClick, this will be undefined when the function is actually called.
-          </View>
-          <View className="card-content-item">
-            You have to be careful about the meaning of this in JSX callbacks. In JavaScript, class methods are not bound by default. If you forget to bind this.handleClick and pass it to onClick, this will be undefined when the function is actually called.
-          </View>
-          <View className="card-content-item">
-            You have to be careful about the meaning of this in JSX callbacks. In JavaScript, class methods are not bound by default. If you forget to bind this.handleClick and pass it to onClick, this will be undefined when the function is actually called.
-          </View>
-        </View>
-        <View className="card-download">
-          <View className="app-avatar"></View>
-          <View className="app-name lg-text">黄油相机 - Plog记录日常</View>
-          <View className="app-descripttion mini-text">超人气Plog创作工具</View>
-          <Button className="app-download-btn">获取</Button>
-          <View className="app-download-tips mini-text">App内购买</View>
-        </View>
-        <View className="card-share">
-          <Button className="card-share-btn">分享</Button>
-        </View>
-      </CoverView>
+      <View className="page-card-continer" style={this.state.containerStyle}>
+        <CoverView
+          id={`card-${this.props.name}`}
+          style={this.state.style}
+          className={[
+            'page-card',
+            this.state.isExpand ? ' is-expand' : '',
+            this.state.isTap ? ' is-tap' : '',
+            this.state.addCloseExpand ? 'is-close-expand' : ''
+          ]}
+          onTouchStart={this.handleCardTapStart}
+          onTouchEnd={this.handleCardTapEnd}
+        >
+          {
+            !this.props.children &&
+            <>
+              <View className="card-banner">
+                <View className="card-banner-header">
+                  <Text className="mini-text ">高手绝招</Text>
+                  <View className="lg-text">来一次图片与文字的绝妙</View>
+                  <View className="lg-text">搭配</View>
+                </View>
+                <Image src={banner} mode='widthFix' className="card-banner-bg"></Image>
+              </View>
+              <View className="card-content app-container">
+                <View className="card-content-item">
+                  You have to be careful about the meaning of this in JSX callbacks. In JavaScript, class methods are not bound by default. If you forget to bind this.handleClick and pass it to onClick, this will be undefined when the function is actually called.
+                </View>
+                <View className="card-content-item">
+                  You have to be careful about the meaning of this in JSX callbacks. In JavaScript, class methods are not bound by default. If you forget to bind this.handleClick and pass it to onClick, this will be undefined when the function is actually called.
+                </View>
+                <View className="card-content-item">
+                  You have to be careful about the meaning of this in JSX callbacks. In JavaScript, class methods are not bound by default. If you forget to bind this.handleClick and pass it to onClick, this will be undefined when the function is actually called.
+                </View>
+              </View>
+              <View className="card-download">
+                <View className="app-avatar"></View>
+                <View className="app-name lg-text">黄油相机 - Plog记录日常</View>
+                <View className="app-descripttion mini-text">超人气Plog创作工具</View>
+                <Button className="app-download-btn">获取</Button>
+                <View className="app-download-tips mini-text">App内购买</View>
+              </View>
+              <View className="card-share">
+                <Button className="card-share-btn">分享</Button>
+              </View>
+            </>
+          }
+          
+        </CoverView>
+      </View>
     )
   }
 }
