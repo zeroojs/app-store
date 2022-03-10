@@ -4,7 +4,7 @@
  * @Author: Minyoung
  * @Date: 2022-03-03 15:44:08
  * @LastEditors: Minyoung
- * @LastEditTime: 2022-03-06 23:52:13
+ * @LastEditTime: 2022-03-10 23:52:05
  */
 import { View, Text, Image, CoverView, Button } from "@tarojs/components";
 import Taro from "@tarojs/taro";
@@ -81,7 +81,10 @@ export default class PageCard extends Component {
   }
   render() {
     return (
-      <View className="page-card-continer" style={this.state.containerStyle}>
+      <View
+        className={`page-card-continer${this.props.mode === 'free' ? ' is-free' : ''}`}
+        style={this.state.containerStyle}
+      >
         <CoverView
           id={`card-${this.props.name}`}
           style={this.state.style}
@@ -95,7 +98,7 @@ export default class PageCard extends Component {
           onTouchEnd={this.handleCardTapEnd}
         >
           {
-            !this.props.children &&
+            !this.props.children ?
             <>
               <View className="card-banner">
                 <View className="card-banner-header">
@@ -127,8 +130,9 @@ export default class PageCard extends Component {
                 <Button className="card-share-btn">分享</Button>
               </View>
             </>
+            :
+            this.props.children
           }
-          
         </CoverView>
       </View>
     )
