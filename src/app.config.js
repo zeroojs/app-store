@@ -4,12 +4,12 @@
  * @Author: Minyoung
  * @Date: 2022-03-03 15:07:36
  * @LastEditors: Minyoung
- * @LastEditTime: 2022-03-03 15:37:20
+ * @LastEditTime: 2022-03-14 23:35:36
  */
 export default defineAppConfig({
   pages: [
-    'pages/index/index',
-    'pages/game/index'
+    'pages/game/index',
+    'pages/index/index'
   ],
   window: {
     backgroundTextStyle: 'light',
